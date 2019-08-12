@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<style>
+    body {
+    background-color: lightsteelblue;
+    margin:0;
+    padding:0;
+    font-family:helvetica, sans-serif;
+}
+    label {
+    float:left;
+    clear:both;
+    color:#333;
+    margin-bottom:4px;
+}
+    input, textarea {
+    clear:both;
+    float:left;
+    margin:0 0 10px;
+    background:#ededed;
+    border:0;
+    padding:6px 10px;
+    font-size:12px;
+}
+    input[type=submit] {
+    font-weight:bold;
+    background:#00abff;
+    color:#fff;
+    padding:10px 20px;
+    font-size:14px;
+    text-transform:uppercase;
+}
+    .errorlist {
+    color:#cc0033;
+    float:left;
+    clear:both;
+    padding-left:10px;
+}
+    .comment {
+    padding:10px;
+}
+    .comment:nth-child(even) {
+    background:red;
+}
+    .comment .info {
+    font-weight:bold;
+    font-size:12px;
+    color:blue;
+}
+</style>
+{% with comments.count as total_comments %}
+  <h2>
+      {{ total_comments }} comment{{ total_comments|pluralize }}
+  </h2>
+
+{% endwith %}
+
+ {% for comment in comments %}
+   <div class="comment">
+       <p class="info">
+         Comment {{ forloop.counter }} by {{ comment.name }}
+         {{ comment.created }}
+       </p>
+       {{ comment.body|linebreaks }}
+   </div>
+
+ {% empty %}
+
+    <p>There are no comments yet.</p>
+
+ {% endfor %}
+
+ {% if new_comment %}
+   <h2>Your comment has been added.</h2>
+
+  {% else %}
+
+    <h2>Add a new comment</h2>
+
+    <form action="." method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Add comment"></p>
+    </form>
+
+ {% endif %}

@@ -1,0 +1,28 @@
+{% extends "blogz/base.html" %}
+{% load blog_tagz %}
+
+{% block title %}
+Your Blog
+{% endblock %}
+
+{% block content %}
+  <h1>Your Blog</h1>
+  {% for post in posts %}
+    <h2>
+        {{ post.title }}
+    </h2>
+    <p class="date">
+        publish {{ post.publish }} By {{ post.author }}
+    </p>
+    {{ post.body|markdown|truncatewords_html:30 }}
+
+     <a href="{% url 'post_share' post.id %}">
+        Share this post
+     </a>
+<br>
+       <a style="color:blue;" href="{% url 'comment' post.id %}">
+        Comments
+       </a>
+   {% endfor %}
+  {% include "blogz/pagination.html" with page=page_obj %}
+{% endblock %}

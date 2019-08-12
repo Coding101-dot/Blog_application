@@ -1,0 +1,89 @@
+{% load blog_tagz %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<style>
+
+
+body {
+    background-color: lightsteelblue;
+    margin:0;
+    padding:0;
+    font-family:helvetica, sans-serif;
+}
+
+a {
+    color:red;
+    text-decoration:none;
+}
+
+h1 {
+    font-family:Fantasy;
+    font-weight:normal;
+    border-bottom:1px solid sandybrown;
+    padding:0 0 10px 0;
+}
+
+h2 {
+    font-weight:normal;
+    margin:30px 0 0;
+}
+
+#content {
+    float:left;
+    width:60%;
+    padding:0 0 0 30px;
+}
+
+#sidebar {
+    float:right;
+    width:30%;
+    padding:10px;
+    background:aquamarine;
+    height:100%;
+}
+
+p.date {
+    color:red;
+    font-family: georgia, serif;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* pagination */
+.pagination {
+    margin:40px 0;
+    font-weight:bold;
+}
+
+
+</style>
+<body>
+ <div id = "content">
+     {% block content %}
+     {% endblock %}
+ </div>
+<div id ="sidebar">
+    <h2>Your Blog</h2>
+    <a href="{% url 'add_post' %}">Add post</a>
+    <p> This is your new blog, You have written a total of {% total_posts %} posts</p>
+    <h3>Latest posts</h3>
+    {% show_latest_posts %}
+    <h3>Most commented posts</h3>
+    {% get_most_commented_posts as most_commented_posts %}
+    <ul>
+        {% for post in most_commented_posts %}
+    <li>
+        {{post.title}}
+    </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+</body>
+</html>
